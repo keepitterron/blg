@@ -1,7 +1,8 @@
 ---
-title: Await a promise without try
+title: Await a promise without try/catch
 date: 04/01/2021
 ---
+
 As widespread and valuable as `await` is in Javascript, I really cannot stand wrapping it in a `try/catch`.
 
 Most of the time I use a catch block, I want to prevent the function from blocking the flow and instead gracefully recover by returning some default value. Or maybe the operation is not business-critical, and it can fail silently.  
@@ -15,7 +16,7 @@ try {
   log(error);
 }
 
-if(!posts.length) {
+if (!posts.length) {
   return [];
 }
 
@@ -25,13 +26,13 @@ if(!posts.length) {
 We can leverage the fact that every awaitable function is essentially a promise and use [Promise.prototype.catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) to clean up our code and make it simpler.
 
 ```js
-const posts = await getAllPosts().catch(error => {
+const posts = await getAllPosts().catch((error) => {
   log(error);
 
   return [];
-})
+});
 
-if(!posts.length) {
+if (!posts.length) {
   return [];
 }
 
@@ -50,4 +51,17 @@ try {
 } catch (_) {
   // do nothing
 }
+```
+
+I also use this technique when i want to further process data in the same context:
+
+```js
+const post = await getSinglePost().then(post => withAbstract(post));
+
+// instead of
+const post = await getSinglePost();
+const postWithAbstract = withAbstract(post));
+
+// or
+const post = withAbstract(await getSinglePost()); // this feels dirty
 ```
