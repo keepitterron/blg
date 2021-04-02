@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>C//S Blog &mdash; </title>
-  <base href="/blg/">
+  <title>C//S Blog &mdash; Await a promise without try</title>
+  <base href="https://keepitterron.github.io/blg/">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Claudio Semeraro">
   <meta name="description" content="Tech lead at Loom">
@@ -45,9 +45,49 @@
     </ul>
   </header>
   <main class="content post">
-  <h1 class="post__title">✨ </h1>
+  <h1 class="post__title">✨ Await a promise without try</h1>
   <div class="post__content">
-    
+    <p>As widespread and valuable as <code>await</code> is in Javascript, I really cannot stand wrapping it in a <code>try/catch</code>.</p>
+<p>Most of the time I use a catch block, I want to prevent the function from blocking the flow and instead gracefully recover by returning some default value. Or maybe the operation is not business-critical, and it can fail silently.<br>
+In these cases, a try/catch is overly verbose and can make the code harder to parse or make some patterns look awkward (like having to declare a variable outside of the block to use it outside of it).</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> posts = [];
+<span class="hljs-keyword">try</span> {
+  posts = <span class="hljs-keyword">await</span> getAllPosts();
+} <span class="hljs-keyword">catch</span> (error) {
+  log(error);
+}
+
+<span class="hljs-keyword">if</span>(!posts.length) {
+  <span class="hljs-keyword">return</span> [];
+}
+
+<span class="hljs-comment">// continue with the code</span>
+</code></pre>
+<p>We can leverage the fact that every awaitable function is essentially a promise and use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch">Promise.prototype.catch</a> to clean up our code and make it simpler.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> posts = <span class="hljs-keyword">await</span> getAllPosts().catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+  log(error);
+
+  <span class="hljs-keyword">return</span> [];
+})
+
+<span class="hljs-keyword">if</span>(!posts.length) {
+  <span class="hljs-keyword">return</span> [];
+}
+
+<span class="hljs-comment">// continue with the code</span>
+</code></pre>
+<p>This pattern looks even nicer when the use-case is awaiting a function that is not critical:</p>
+<pre class="hljs"><code><span class="hljs-keyword">await</span> promise.catch(<span class="hljs-function">() =&gt;</span> <span class="hljs-literal">null</span>);
+
+<span class="hljs-comment">// instead of</span>
+
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> promise;
+} <span class="hljs-keyword">catch</span> (_) {
+  <span class="hljs-comment">// do nothing</span>
+}
+</code></pre>
+
   </div>
 </main>
 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>C//S Blog &mdash; The for-of loop</title>
+  <base href="https://keepitterron.github.io/blg/">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Claudio Semeraro">
+  <meta name="description" content="Tech lead at Loom">
+  <meta name="keywords"
+    content="senior fronted developer,javascript,js,html,css,node,react,sass,less,BEM,es6">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
+
+  <!-- Google Analytics -->
+  <script>
+    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-24133188-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
+  <!-- End Google Analytics -->
+
+  <style>
+    :root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9}html,body{font-size:100%;margin:0;padding:0}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif}h1{font-size:2.3rem}a{color:var(--primary);display:inline-block;text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}p{line-height:1.6}.content{max-width:75ch}.head{display:flex;flex-direction:column;margin:2rem 0;color:var(--primary)}.head__title{padding:0;margin:0;font-size:4rem;letter-spacing:.2rem}
+.head__menu{display:flex;padding:0;margin:0;font-size:1.6rem;text-transform:uppercase;list-style-type:none}.head__menu li:first-child{margin-left:0}.head__menu li{margin-left:1rem}.head__menu a{padding:0 .3rem .2rem}.content p code{color:#fae4fc}@media only screen and (min-width:900px){body{padding:4rem 8rem}.head{flex-direction:row;align-items:center;justify-content:space-between;margin:4rem 0}.post__content{max-width:800px}}.hljs{display:block;background:var(--color);padding:1rem;margin:0 0 3rem;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07);color:#333;overflow-x:auto}
+.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}
+.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}
+  </style>
+</head>
+
+<body>
+  <header class="head">
+    <h3 class="head__title"><a href="/" title="Blog home">C//S</a></h3>
+    <ul class=" head__menu">
+      <li>
+        <a href="https://github.com/keepitterron" title="keepitterron on GitHub">GitHub.</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/keepitterron" title="keepitterron on Twitter">Twitter.</a>
+      </li>
+      <li>
+        <a href="http://blg.keepitterron.nl" title="keepitterron blog">Blog.</a>
+      </li>
+    </ul>
+  </header>
+  <main class="content post">
+  <h1 class="post__title">✨ The for-of loop</h1>
+  <div class="post__content">
+    <p><code>for-of</code> is a new loop in ES2015 that replaces both <code>for-in</code> and <code>forEach()</code> and supports the new iteration protocol (that is, objects that have a <code>[Symbols.iterator]</code> property).</p>
+<p>The <code>[Symbol.iterator]</code> property allows us to manually iterate over the collection by calling the <code>[Symbol.iterator]().next()</code> method to retrieve the next item in the collection.</p>
+<p>It combines the short syntax of <code>forEach</code> with the familiar <code>for</code> loop (<code>break/continue</code> included).</p>
+<p>Use it to loop over <strong>iterable objects</strong> (Arrays, Strings, Maps, Sets, Generators, NodeLists...):</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> iterable = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> x <span class="hljs-keyword">of</span> iterable) {
+    <span class="hljs-built_in">console</span>.log(x);
+}
+<span class="hljs-comment">// a</span>
+<span class="hljs-comment">// b</span>
+</code></pre>
+<p>If in need to be able to access the <code>key/index</code> of the iterable object, <code>destructuring</code> might be used:</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> map = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>()
+  .set(<span class="hljs-literal">false</span>, <span class="hljs-string">&#x27;no&#x27;</span>)
+  .set(<span class="hljs-literal">true</span>, <span class="hljs-string">&#x27;yes&#x27;</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> map) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`key: <span class="hljs-subst">${key}</span>, value: <span class="hljs-subst">${value}</span>`</span>);
+}
+<span class="hljs-comment">// key: false, value: no</span>
+<span class="hljs-comment">// key: true, value: yes</span>
+</code></pre>
+<p><code>Array.prototype.entries()</code> needs to be used in combination with destructuring when working with arrays:</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [index, value] <span class="hljs-keyword">of</span> array) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`index: <span class="hljs-subst">${index}</span>, value: <span class="hljs-subst">${value}</span>`</span>);
+}
+<span class="hljs-comment">// index: 0, value: a</span>
+<span class="hljs-comment">// index: 1, value: b</span>
+</code></pre>
+<h2>At a glance</h2>
+<p><strong>for</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>];
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i; i &lt; array.length; i++) {
+  <span class="hljs-built_in">console</span>.log(array[i]);
+}
+<span class="hljs-comment">// a</span>
+<span class="hljs-comment">// b</span>
+</code></pre>
+<p><strong>for-in</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>];
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">const</span> i <span class="hljs-keyword">in</span> array) {
+  <span class="hljs-built_in">console</span>.log(array[i]);
+}
+<span class="hljs-comment">// a</span>
+<span class="hljs-comment">// b</span>
+</code></pre>
+<p><strong>for-of</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> value <span class="hljs-keyword">of</span> array) {
+  <span class="hljs-built_in">console</span>.log(value);
+}
+<span class="hljs-comment">// a</span>
+<span class="hljs-comment">// b</span>
+</code></pre>
+
+  </div>
+</main>
+
+</body>
+
+</html>

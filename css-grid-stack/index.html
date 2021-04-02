@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>C//S Blog &mdash; </title>
-  <base href="/blg/">
+  <title>C//S Blog &mdash; CSS grid stack</title>
+  <base href="https://keepitterron.github.io/blg/">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Claudio Semeraro">
   <meta name="description" content="Tech lead at Loom">
@@ -45,9 +45,57 @@
     </ul>
   </header>
   <main class="content post">
-  <h1 class="post__title">✨ </h1>
+  <h1 class="post__title">✨ CSS grid stack</h1>
   <div class="post__content">
-    
+    <p>A pancake stack.</p>
+<pre class="hljs"><code><span class="hljs-selector-class">.stack</span> {
+  <span class="hljs-attribute">display</span>: grid;
+  grid-template-areas: <span class="hljs-string">&#x27;stack&#x27;</span>;
+}
+
+<span class="hljs-selector-class">.stack</span> &gt; * {
+  grid-area: stack;
+  place-self: center;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+</code></pre>
+<style>
+.stack {
+  display: grid;
+  grid-template-areas: "stack";
+  aspect-ratio: 16/9;
+}
+
+.stack > * {
+  grid-area: stack;
+  place-self: center;
+  text-align: center;
+}
+
+.stack img {
+  width: 100%;
+  opacity: 0.5;
+}
+
+.stack h2 {
+  font-size: clamp(3.5rem, 5vw, 5rem);
+  margin: 0 0 1rem;
+}
+
+.stack article {
+  z-index: 1;
+}
+
+
+</style>
+<div class="stack">
+<img src="assets/cover.jpg">
+  <article>
+    <h2>Hello!</h2>
+    <p>Breakfast is ready.</p>
+  </article>
+</div>
+
   </div>
 </main>
 

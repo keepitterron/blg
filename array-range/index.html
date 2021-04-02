@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>C//S Blog &mdash; Creating an array of N elements</title>
+  <base href="https://keepitterron.github.io/blg/">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Claudio Semeraro">
+  <meta name="description" content="Tech lead at Loom">
+  <meta name="keywords"
+    content="senior fronted developer,javascript,js,html,css,node,react,sass,less,BEM,es6">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
+
+  <!-- Google Analytics -->
+  <script>
+    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-24133188-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
+  <!-- End Google Analytics -->
+
+  <style>
+    :root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9}html,body{font-size:100%;margin:0;padding:0}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif}h1{font-size:2.3rem}a{color:var(--primary);display:inline-block;text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}p{line-height:1.6}.content{max-width:75ch}.head{display:flex;flex-direction:column;margin:2rem 0;color:var(--primary)}.head__title{padding:0;margin:0;font-size:4rem;letter-spacing:.2rem}
+.head__menu{display:flex;padding:0;margin:0;font-size:1.6rem;text-transform:uppercase;list-style-type:none}.head__menu li:first-child{margin-left:0}.head__menu li{margin-left:1rem}.head__menu a{padding:0 .3rem .2rem}.content p code{color:#fae4fc}@media only screen and (min-width:900px){body{padding:4rem 8rem}.head{flex-direction:row;align-items:center;justify-content:space-between;margin:4rem 0}.post__content{max-width:800px}}.hljs{display:block;background:var(--color);padding:1rem;margin:0 0 3rem;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07);color:#333;overflow-x:auto}
+.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}
+.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}
+  </style>
+</head>
+
+<body>
+  <header class="head">
+    <h3 class="head__title"><a href="/" title="Blog home">C//S</a></h3>
+    <ul class=" head__menu">
+      <li>
+        <a href="https://github.com/keepitterron" title="keepitterron on GitHub">GitHub.</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/keepitterron" title="keepitterron on Twitter">Twitter.</a>
+      </li>
+      <li>
+        <a href="http://blg.keepitterron.nl" title="keepitterron blog">Blog.</a>
+      </li>
+    </ul>
+  </header>
+  <main class="content post">
+  <h1 class="post__title">✨ Creating an array of N elements</h1>
+  <div class="post__content">
+    <p>When I work on a new side project I like to spend an absurd amount of time focusing on critical stuff like making the code look good for no particular reason. I’m finally free of restrictions, standards and code reviews and I can let my inner kid go wild.
+One of these instances is getting rid of for loops.</p>
+<p>I’m talking about the most classic of the classic loops:</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = [];
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) {
+  array.push(i);
+}
+</code></pre>
+<p>There is nothing wrong with this piece of code and it does not need to be optmized. But it <strong>feels</strong> dirty to me. It does not feel modern.
+And it's total bullshit of course.</p>
+<p>Whenever I have a similar scenario I want really bad to use <code>map</code>. It would be <strong>so</strong> clean:</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = <span class="hljs-built_in">Array</span>(<span class="hljs-number">100</span>).map(<span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i);
+</code></pre>
+<p>Look at it! Look at how beautiful it is.
+Problem is: it does not work. And it does not work because the array constructor creates an <strong>empty array of lenght 100</strong> in this case.
+Please note: not an array with 100 empty slots, but an array with no slots and just an indication that its length is 100:</p>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">length</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">__proto__</span>: <span class="hljs-built_in">Array</span>(<span class="hljs-number">0</span>),
+}
+</code></pre>
+<p><code>Map</code> tries to iterate over the values of this array but there's nothing to iterate over: <code>console.log(array) // [empty x 100]</code>.</p>
+<p>A for loop works beautifully in this case, but there are a number of ways to better please my own sense of code aesthetics.</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from">Array.from</a> creates an array from an <code>arrayLike</code> object. That is objects with a length property and indexed elements.
+In our case the object <code>{length: 100}</code> satisfies the definition of <code>arrayLike</code> and we can <code>map</code> over its elements. Better yet, <code>Array.from</code> takes a callback as a second argument that does the mapping for us without the creation of an intermediate array:</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = <span class="hljs-built_in">Array</span>.from({<span class="hljs-attr">length</span>: <span class="hljs-number">100</span>}, <span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i);
+</code></pre>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">spread syntax</a> expands an <code>iterable</code>.
+In our case returns 100 <code>undefined</code> elements that get expanded into the empty array (<code>[]</code>).</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> array = [...Array(<span class="hljs-number">100</span>)].map(<span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i);
+</code></pre>
+<p>Again, this is totally unnecessary: a for loop is simple enough, it's readable, it's well understood even by people with little experience and it's performant.
+The definition of readable code - however - is quite subjective I believe, when I can write functional JS or I don't have to make it readable by less experienced developers I much prefer to avoid the use of loops in favour of a more terse synatx, immutability and the use of pure functions.</p>
+
+  </div>
+</main>
+
+</body>
+
+</html>
