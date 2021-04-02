@@ -47,5 +47,5 @@ export async function getAllPosts() {
 export async function getAllUrls() {
   const files = await findFiles(POSTS_DIR);
 
-  return files.filter(Boolean);
+  return files.map(urlify).filter(Boolean);
 }

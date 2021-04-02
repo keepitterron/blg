@@ -7,7 +7,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      BLOG_BASEURL: /blg/
+      BLOG_BASEURL: https://keepitterron.github.io/blg/
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1

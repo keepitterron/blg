@@ -23,7 +23,7 @@ async function build() {
       url: `/${url}`,
     });
 
-    await createPost(`${url}.html`, post.body);
+    await createPost(`${url}/index.html`, post.body);
   }
 }
 

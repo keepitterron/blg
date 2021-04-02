@@ -24,7 +24,13 @@ export async function createDist() {
   return mkdir(__dist);
 }
 
-export function createPost(fileName, fileContent) {
-  const filePath = path.join(__dist, fileName);
+export async function createPost(file, fileContent) {
+  const [destPath, fileName = ''] = file.split('/');
+
+  if (fileName) {
+    await mkdir(path.join(__dist, destPath));
+  }
+
+  const filePath = path.join(__dist, destPath, fileName);
   return writeFile(filePath, fileContent, { encoding: 'utf-8' });
 }
