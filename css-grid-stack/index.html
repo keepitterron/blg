@@ -22,10 +22,10 @@
   <!-- End Google Analytics -->
 
   <style>
-    :root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9}html,body{font-size:100%;margin:0;padding:0}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif}h1{font-size:2.3rem}a{color:var(--primary);display:inline-block;text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}p{line-height:1.6}.content{max-width:75ch}.head{display:flex;flex-direction:column;margin:2rem 0;color:var(--primary)}.head__title{padding:0;margin:0;font-size:4rem;letter-spacing:.2rem}
-.head__menu{display:flex;padding:0;margin:0;font-size:1.6rem;text-transform:uppercase;list-style-type:none}.head__menu li:first-child{margin-left:0}.head__menu li{margin-left:1rem}.head__menu a{padding:0 .3rem .2rem}.content p code{color:#fae4fc}@media only screen and (min-width:900px){body{padding:4rem 8rem}.head{flex-direction:row;align-items:center;justify-content:space-between;margin:4rem 0}.post__content{max-width:800px}}.hljs{display:block;background:var(--color);padding:1rem;margin:0 0 3rem;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07);color:#333;overflow-x:auto}
-.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}
-.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}
+    :root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9;--pink:#fae4fc}html,body{font-size:100%;margin:0;padding:0}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif}h1{font-size:2.3rem;font-size:clamp(1.3rem,5vw,2.5rem)}a{color:var(--primary);display:inline-block;text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}p{line-height:1.6}.content{max-width:75ch}.head{display:flex;flex-direction:column;margin:2rem 0;color:var(--primary)}
+.head__title{padding:0;margin:0;font-size:4rem;letter-spacing:.2rem}.head__menu{display:flex;gap:1rem;padding:0;margin:0;font-size:clamp(1rem,5vw,1.6rem);text-transform:uppercase;list-style-type:none}.head__menu a{padding:0 .3rem .2rem}.content p code{color:var(--pink);padding:.1em .5em;border-radius:2px;background-color:rgba(0,0,0,0.5);display:inline-block}@media only screen and (min-width:900px){body{padding:4rem 8rem}.head{flex-direction:row;align-items:center;justify-content:space-between;margin:4rem 0}
+.post__content{max-width:800px}}.hljs{display:block;background:var(--color);padding:1rem;margin:0 0 3rem;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07);color:var(--bg);overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}
+.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}
   </style>
 </head>
 
@@ -47,23 +47,12 @@
   <main class="content post">
   <h1 class="post__title">✨ CSS grid stack</h1>
   <div class="post__content">
-    <p>A pancake stack.</p>
-<pre class="hljs"><code><span class="hljs-selector-class">.stack</span> {
-  <span class="hljs-attribute">display</span>: grid;
-  grid-template-areas: <span class="hljs-string">&#x27;stack&#x27;</span>;
-}
-
-<span class="hljs-selector-class">.stack</span> &gt; * {
-  grid-area: stack;
-  place-self: center;
-  <span class="hljs-attribute">text-align</span>: center;
-}
-</code></pre>
-<style>
+    <style>
 .stack {
   display: grid;
   grid-template-areas: "stack";
   aspect-ratio: 16/9;
+  margin: 0 0 1rem;
 }
 
 .stack > * {
@@ -86,15 +75,83 @@
   z-index: 1;
 }
 
+.circle {
+  background: honeydew;
+  padding: 0.5rem;
+}
 
+.circle > div {
+  border-radius: 100%;
+}
+
+.circle .l {
+  width: 12rem;
+  height: 12rem;
+  background-color: lightcoral;
+}
+.circle .m {
+  width: 8rem;
+  height: 8rem;
+  background-color: gainsboro;
+}
+.circle .s {
+  width: 5rem;
+  height: 5rem;
+  background-color: forestgreen;
+}
+
+.circle p {
+  font-weight: 600;
+  font-size: 2rem;
+}
 </style>
+<p>Traditionally, the way we've achieved overlapping elements on top of each other has been <code>position:absolute</code>.<br>
+If you also want to center stuff, you gotta use a combination of top/bottom left/right and the corresponding translate transform.<br>
+It is not the easiest thing to work with, it requires a bit of code, it's error prone and it feels as fragile as it looks in code.</p>
+<p>Fear no more, though, as I'm about to share my latest favorite technique: stacking elements on top of each other with CSS grid!</p>
+<pre class="hljs"><code><span class="hljs-selector-class">.stack</span> {
+  <span class="hljs-attribute">display</span>: grid;
+  grid-template-areas: <span class="hljs-string">&#x27;stack&#x27;</span>;
+}
+
+<span class="hljs-selector-class">.stack</span> &gt; * {
+  grid-area: stack;
+  place-self: center;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+</code></pre>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;stack&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;cover.jpg&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Hello!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Breakfast is ready.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 <div class="stack">
-<img src="assets/cover.jpg">
+  <img src="assets/cover.jpg">
   <article>
     <h2>Hello!</h2>
     <p>Breakfast is ready.</p>
   </article>
 </div>
+<p>We are defining a grid with a single <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas">template area</a> that we called <code>stack</code> (you can give it whatever name you want) and then we're placing every direct children of this container in the <code>stack</code> area, centered.<br>
+It feels quite magic ✨</p>
+<br />
+<p>The <code>.stack</code> utility it's all it takes (plus some cosmetic styling) to achieve the example below:</p>
+<div class="stack circle">
+  <div class="l"></div>
+  <div class="m"></div>
+  <div class="s"></div>
+  <p>💖</p>
+</div>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;stack circle&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>💖<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 
   </div>
 </main>

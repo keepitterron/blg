@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>C//S Blog &mdash; Await a promise without try</title>
+  <title>C//S Blog &mdash; Await a promise without try/catch</title>
   <base href="https://keepitterron.github.io/blg/">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Claudio Semeraro">
@@ -22,10 +22,10 @@
   <!-- End Google Analytics -->
 
   <style>
-    :root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9}html,body{font-size:100%;margin:0;padding:0}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif}h1{font-size:2.3rem}a{color:var(--primary);display:inline-block;text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}p{line-height:1.6}.content{max-width:75ch}.head{display:flex;flex-direction:column;margin:2rem 0;color:var(--primary)}.head__title{padding:0;margin:0;font-size:4rem;letter-spacing:.2rem}
-.head__menu{display:flex;padding:0;margin:0;font-size:1.6rem;text-transform:uppercase;list-style-type:none}.head__menu li:first-child{margin-left:0}.head__menu li{margin-left:1rem}.head__menu a{padding:0 .3rem .2rem}.content p code{color:#fae4fc}@media only screen and (min-width:900px){body{padding:4rem 8rem}.head{flex-direction:row;align-items:center;justify-content:space-between;margin:4rem 0}.post__content{max-width:800px}}.hljs{display:block;background:var(--color);padding:1rem;margin:0 0 3rem;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07);color:#333;overflow-x:auto}
-.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}
-.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}
+    :root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9;--pink:#fae4fc}html,body{font-size:100%;margin:0;padding:0}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif}h1{font-size:2.3rem;font-size:clamp(1.3rem,5vw,2.5rem)}a{color:var(--primary);display:inline-block;text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}p{line-height:1.6}.content{max-width:75ch}.head{display:flex;flex-direction:column;margin:2rem 0;color:var(--primary)}
+.head__title{padding:0;margin:0;font-size:4rem;letter-spacing:.2rem}.head__menu{display:flex;gap:1rem;padding:0;margin:0;font-size:clamp(1rem,5vw,1.6rem);text-transform:uppercase;list-style-type:none}.head__menu a{padding:0 .3rem .2rem}.content p code{color:var(--pink);padding:.1em .5em;border-radius:2px;background-color:rgba(0,0,0,0.5);display:inline-block}@media only screen and (min-width:900px){body{padding:4rem 8rem}.head{flex-direction:row;align-items:center;justify-content:space-between;margin:4rem 0}
+.post__content{max-width:800px}}.hljs{display:block;background:var(--color);padding:1rem;margin:0 0 3rem;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07);color:var(--bg);overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}
+.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}
   </style>
 </head>
 
@@ -45,7 +45,7 @@
     </ul>
   </header>
   <main class="content post">
-  <h1 class="post__title">✨ Await a promise without try</h1>
+  <h1 class="post__title">✨ Await a promise without try/catch</h1>
   <div class="post__content">
     <p>As widespread and valuable as <code>await</code> is in Javascript, I really cannot stand wrapping it in a <code>try/catch</code>.</p>
 <p>Most of the time I use a catch block, I want to prevent the function from blocking the flow and instead gracefully recover by returning some default value. Or maybe the operation is not business-critical, and it can fail silently.<br>
@@ -57,20 +57,20 @@ In these cases, a try/catch is overly verbose and can make the code harder to pa
   log(error);
 }
 
-<span class="hljs-keyword">if</span>(!posts.length) {
+<span class="hljs-keyword">if</span> (!posts.length) {
   <span class="hljs-keyword">return</span> [];
 }
 
 <span class="hljs-comment">// continue with the code</span>
 </code></pre>
 <p>We can leverage the fact that every awaitable function is essentially a promise and use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch">Promise.prototype.catch</a> to clean up our code and make it simpler.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> posts = <span class="hljs-keyword">await</span> getAllPosts().catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+<pre class="hljs"><code><span class="hljs-keyword">const</span> posts = <span class="hljs-keyword">await</span> getAllPosts().catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
   log(error);
 
   <span class="hljs-keyword">return</span> [];
-})
+});
 
-<span class="hljs-keyword">if</span>(!posts.length) {
+<span class="hljs-keyword">if</span> (!posts.length) {
   <span class="hljs-keyword">return</span> [];
 }
 
@@ -86,6 +86,16 @@ In these cases, a try/catch is overly verbose and can make the code harder to pa
 } <span class="hljs-keyword">catch</span> (_) {
   <span class="hljs-comment">// do nothing</span>
 }
+</code></pre>
+<p>I also use this technique when i want to further process data in the same context:</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> post = <span class="hljs-keyword">await</span> getSinglePost().then(<span class="hljs-function"><span class="hljs-params">post</span> =&gt;</span> withAbstract(post));
+
+<span class="hljs-comment">// instead of</span>
+<span class="hljs-keyword">const</span> post = <span class="hljs-keyword">await</span> getSinglePost();
+<span class="hljs-keyword">const</span> postWithAbstract = withAbstract(post));
+
+<span class="hljs-comment">// or</span>
+<span class="hljs-keyword">const</span> post = withAbstract(<span class="hljs-keyword">await</span> getSinglePost()); <span class="hljs-comment">// this feels dirty</span>
 </code></pre>
 
   </div>
