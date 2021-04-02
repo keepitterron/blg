@@ -6,8 +6,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      BLOG_BASEURL: https://keepitterron.github.io/blg/
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
@@ -17,6 +15,7 @@ jobs:
           yarn install
           yarn build
           cp -r src/assets dist/
+          cp -r src/favicon/* dist/
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.0
