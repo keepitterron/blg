@@ -33,6 +33,7 @@ A pancake stack.
 
 .stack img {
   width: 100%;
+  opacity: 0.5;
 }
 
 .stack h2 {
@@ -40,12 +41,16 @@ A pancake stack.
   margin: 0 0 1rem;
 }
 
+.stack article {
+  z-index: 1;
+}
+
 
 </style>
 <div class="stack">
-<img src="https://images.unsplash.com/photo-1541288097308-7b8e3f58c4c6?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1950&q=80">
-  <div>
+<img src="assets/cover.jpg">
+  <article>
     <h2>Hello!</h2>
     <p>Breakfast is ready.</p>
-  </div>
+  </article>
 </div>
