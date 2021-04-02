@@ -1,0 +1,9 @@
+<main class="content">
+  <h1>✨ Post archives</h1>
+  <ul class="postList">
+    {{# each posts}}
+    <li>[{{formattedDate}}] <a href="/{{url}}">{{title}}</a></li>
+    {{/each}}
+  </ul>
+
+</main>
