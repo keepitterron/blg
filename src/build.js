@@ -16,6 +16,12 @@ async function build() {
 
   await createPost('index.html', index.body);
 
+  const feed = await app.inject({
+    method: 'GET',
+    url: '/feed.xml',
+  });
+  await createPost('feed.xml', feed.body);
+
   const urls = await getAllUrls();
   for (const url of urls) {
     const post = await app.inject({
