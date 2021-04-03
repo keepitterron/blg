@@ -6,7 +6,7 @@ import { createDist, createPost } from './data-layer/files.js';
 const app = fastify();
 
 async function build() {
-  await server(app);
+  await server(app, { noTracker: true });
   await createDist();
 
   const index = await app.inject({

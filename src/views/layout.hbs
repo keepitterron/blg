@@ -24,6 +24,17 @@
   <script async src='https://www.google-analytics.com/analytics.js'></script>
   <!-- End Google Analytics -->
 
+{{#if fastRefresh}}
+  <script>
+    function connect(shouldReload = false) {
+      const ws = new WebSocket("ws://localhost:3000/ws");
+      ws.onopen = () => shouldReload && location.reload();
+      ws.onclose = () => setTimeout(() =>connect(true), 1000);
+      ws.onerror = () => null;
+    }
+    connect();
+  </script>
+{{/if}}
   <style>
     {{{styleRaw}}}
   </style>
