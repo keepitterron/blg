@@ -93,7 +93,7 @@ Fear no more, though, as I'm about to share my latest favorite technique: stacki
 ```
 
 <div class="stack">
-  <img src="assets/cover.jpg">
+  <img src="assets/cover.jpg" alt="a cover image">
   <article>
     <h2>Hello!</h2>
     <p>Breakfast is ready.</p>
