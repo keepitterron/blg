@@ -1,7 +1,9 @@
 ---
 title: The for-of loop
+description: A look at the for-of loop in javascript
 date: 06/10/2018
 ---
+
 `for-of` is a new loop in ES2015 that replaces both `for-in` and `forEach()` and supports the new iteration protocol (that is, objects that have a `[Symbols.iterator]` property).
 
 The `[Symbol.iterator]` property allows us to manually iterate over the collection by calling the `[Symbol.iterator]().next()` method to retrieve the next item in the collection.
@@ -13,7 +15,7 @@ Use it to loop over **iterable objects** (Arrays, Strings, Maps, Sets, Generator
 ```js
 const iterable = ['a', 'b'];
 for (const x of iterable) {
-    console.log(x);
+  console.log(x);
 }
 // a
 // b
@@ -22,11 +24,9 @@ for (const x of iterable) {
 If in need to be able to access the `key/index` of the iterable object, `destructuring` might be used:
 
 ```js
-const map = new Map()
-  .set(false, 'no')
-  .set(true, 'yes');
+const map = new Map().set(false, 'no').set(true, 'yes');
 for (const [key, value] of map) {
-    console.log(`key: ${key}, value: ${value}`);
+  console.log(`key: ${key}, value: ${value}`);
 }
 // key: false, value: no
 // key: true, value: yes
@@ -37,17 +37,19 @@ for (const [key, value] of map) {
 ```js
 const array = ['a', 'b'];
 for (const [index, value] of array) {
-    console.log(`index: ${index}, value: ${value}`);
+  console.log(`index: ${index}, value: ${value}`);
 }
 // index: 0, value: a
 // index: 1, value: b
 ```
 
 ## At a glance
+
 **for**
+
 ```js
 const array = ['a', 'b'];
-for(let i; i < array.length; i++) {
+for (let i; i < array.length; i++) {
   console.log(array[i]);
 }
 // a
@@ -55,9 +57,10 @@ for(let i; i < array.length; i++) {
 ```
 
 **for-in**
+
 ```js
 const array = ['a', 'b'];
-for(const i in array) {
+for (const i in array) {
   console.log(array[i]);
 }
 // a
@@ -65,6 +68,7 @@ for(const i in array) {
 ```
 
 **for-of**
+
 ```js
 const array = ['a', 'b'];
 for (const value of array) {

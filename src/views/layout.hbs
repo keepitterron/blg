@@ -7,7 +7,7 @@
   <base href="/">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Claudio Semeraro">
-  <meta name="description" content="Tech lead at Loom">
+  <meta name="description" content="{{ defaultDescription post.description }}">
   <meta name="keywords"
     content="senior fronted developer,javascript,js,html,css,node,react,sass,less,BEM,es6">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -28,7 +28,13 @@
   <script>
     function connect(shouldReload = false) {
       const ws = new WebSocket("ws://localhost:3000/ws");
-      ws.onopen = () => shouldReload && location.reload();
+      ws.onopen = () => {
+        if(!shouldReload) return;
+
+        fetch('http://localhost:3000/')
+        .then(() => (shouldReload && location.reload()))
+        .catch(() => connect())
+      };
       ws.onclose = () => setTimeout(() =>connect(true), 1000);
       ws.onerror = () => null;
     }

@@ -1,5 +1,6 @@
 ---
 title: CSS grid stack
+description: An alternative way to position elements on top of each other by using grid instead of position:absolute
 date: 03/27/2021
 ---
 

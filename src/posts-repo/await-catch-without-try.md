@@ -1,5 +1,6 @@
 ---
 title: Await a promise without try/catch
+description: using await in javascript without wrapping it in a try/catch block
 date: 04/01/2021
 ---
 

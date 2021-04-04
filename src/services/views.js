@@ -1,6 +1,8 @@
-import hlbr from 'handlebars';
+import hbs from 'handlebars';
 import minifier from 'html-minifier';
 import { fromRoot } from '../data-layer/files.js';
+
+hbs.registerHelper('defaultDescription', (description) => description || 'Tech lead at Loom');
 
 export const minifierOpts = {
   removeComments: true,
@@ -13,7 +15,7 @@ export const minifierOpts = {
 export { default as pov } from 'point-of-view';
 export const povConfig = {
   engine: {
-    handlebars: hlbr,
+    handlebars: hbs,
   },
   layout: 'layout.hbs',
   options: {
