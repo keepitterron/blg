@@ -26,14 +26,15 @@
 
 {{#if fastRefresh}}
   <script>
+    const host = location.host;
     function connect(shouldReload = false) {
-      const ws = new WebSocket("ws://localhost:3000/ws");
+      const ws = new WebSocket(`ws://${host}/ws`);
       ws.onopen = () => {
         if(!shouldReload) return;
 
-        fetch('http://localhost:3000/')
+        fetch(`http://${host}/`)
         .then(() => (shouldReload && location.reload()))
-        .catch(() => connect())
+        .catch(() => ws.close() && connect(true))
       };
       ws.onclose = () => setTimeout(() =>connect(true), 1000);
       ws.onerror = () => null;
