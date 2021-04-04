@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>C//S Blog &mdash; A static site generator built with fastify js</title><base href=/ ><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Claudio Semeraro"><meta name=description content="Building a static site generator with fastifyjs, including hot reaload for fast development"><meta name=keywords content="senior fronted developer,javascript,js,html,css,node,react,sass,less,BEM,es6"><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><script>window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-24133188-1', 'auto');
+    ga('send', 'pageview');</script><script async src=https://www.google-analytics.com/analytics.js></script><style>:root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9;--pink:#fae4fc}*,*::before,*::after{box-sizing:border-box}body,h1,h2,h3,h4,p,ul[class],ol[class],li,blockquote{padding:0;margin:0}body{min-height:100vh;scroll-behavior:smooth;text-rendering:optimizeSpeed;line-height:1.6}ul[class],ol[class]{list-style:none}article>*+*{margin-top:1em}html,body{font-size:100%}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif;padding:8%}h1{font-size:2.3rem;font-size:clamp(1.6rem,5vw,2.5rem);margin-bottom:6%}
+a{color:var(--primary);text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}video,img{max-width:100%;aspect-ratio:16/9}body>header{display:flex;gap:1em;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:6%;max-width:75ch}header h3{font-size:2.3rem;font-size:clamp(2rem,5vw,2.5rem);line-height:1.2}header ul{display:grid;grid-auto-flow:column;gap:1em}main>article{max-width:75ch}main>h1{margin-bottom:3%}.content p code{color:var(--pink);padding:.1em .5em;border-radius:2px;background-color:rgba(0,0,0,0.5);display:inline-block}
+.post__content>*+h2{font-size:1.6rem;margin-top:2.2rem}.postList{font-size:clamp(1rem,3vw,1.6rem)}.postList a{display:inline-block}@media only screen and (max-width:600px){.postList time{display:block}}.content li+li{margin-top:.4rem}.content video,.content img,.hljs{border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07)}.hljs{display:block;padding:1rem;margin:1rem 0 2rem;overflow-x:auto}
+.hljs+.hljs{margin-top:-1rem}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}.hljs{background:#2e3440}.hljs,.hljs-subst{color:#d8dee9}.hljs-selector-tag{color:#81a1c1}.hljs-selector-id{color:#8fbcbb;font-weight:bold}.hljs-selector-class{color:#8fbcbb}.hljs-selector-attr{color:#8fbcbb}.hljs-property{color:#88c0d0}.hljs-selector-pseudo{color:#88c0d0}.hljs-addition{background-color:rgba(163,190,140,0.5)}.hljs-deletion{background-color:rgba(191,97,106,0.5)}.hljs-built_in,.hljs-type{color:#8fbcbb}
+.hljs-class{color:#8fbcbb}.hljs-function{color:#88c0d0}.hljs-function>.hljs-title{color:#88c0d0}.hljs-keyword,.hljs-literal,.hljs-symbol{color:#81a1c1}.hljs-number{color:#a3be8c}.hljs-regexp{color:#ebcb8b}.hljs-string{color:#b9a8b6}.hljs-title{color:#8fbcbb}.hljs-params{color:#d8dee9}.hljs-bullet{color:#81a1c1}.hljs-code{color:#8fbcbb}.hljs-emphasis{font-style:italic}.hljs-formula{color:#8fbcbb}.hljs-strong{font-weight:bold}.hljs-link:hover{text-decoration:underline}.hljs-quote{color:#adb2c5}.hljs-comment{color:#adb2c5}
+.hljs-doctag{color:#8fbcbb}.hljs-meta,.hljs-meta-keyword{color:#5e81ac}.hljs-meta-string{color:#a3be8c}.hljs-attr{color:#8fbcbb}.hljs-attribute{color:#d8dee9}.hljs-builtin-name{color:#81a1c1}.hljs-name{color:#81a1c1}.hljs-section{color:#88c0d0}.hljs-tag{color:#81a1c1}.hljs-variable{color:#d8dee9}.hljs-template-variable{color:#d8dee9}.hljs-template-tag{color:#81a1c1}</style></head><body><header><h3><a href=/ title="Blog home">CS (in JS)</a></h3><ul class=nav><li><a href=https://github.com/keepitterron title="keepitterron on GitHub">GitHub.</a></li><li><a href=https://twitter.com/keepitterron title="keepitterron on Twitter">Twitter.</a></li><li><a href=http://blg.keepitterron.nl title="keepitterron blog">Blog.</a></li></ul></header> <main class="content post"><time>[Apr 04, 2021]</time><h1 class=post__title>✨ A static site generator built with fastify js</h1><article class=post__content><p>Building a blog has been my favorite way of playing with new tech since forever. I'm not constraint by anything, and I can make stuff the way I like.</p>
+<p>It's an excellent playground for experimentation, and even though there's a great choice in terms of static site generators, I chose to build my own, and I'm going to walk you through the concepts involved in the process.</p>
+<img src="assets/lighthouse.png" alt="A perfect 100 score from lightouse for this blog" />
+<h2>The rule of least power</h2>
+<p>I like to think about tools in terms of cost: anything I add on top of what's available natively will add some overhead; if I can avoid it, I will. The least powerful tool that can get the job done is most probably the right one.</p>
+<ul>
+<li>The web is fast and easy by design; we don't always need to complicate things. Write HTML, inline CSS, leverage the fact that <a href="https://en.wikipedia.org/wiki/Webserver_directory_index">web servers will serve index.html</a> by default when accessing a folder.</li>
+<li>Writing HTML is great, but doing it for every article would be a waste of time, and it would be error-prone. Every change needs to be repeated for all files. I need to write some software that builds some abstractions: let me write the article <a href="https://daringfireball.net/projects/markdown/syntax">in a better-suited format</a> and do all the heavy lifting for me with just one command.</li>
+<li>I already use version control (git) to save my code and keep an history somewhere online. It would be nice if I could <a href="https://github.com/features/actions">hook into this process</a> so that I can write some software that builds my website and saves this new version to a server, ready to be accessed in a web browser.</li>
+</ul>
+<h2>Inception</h2>
+<p>The blog generator reads markdown files, parses this data to HTML, and saves it to the appropriate location:</p>
+<ul>
+<li><a href="https://nodejs.org/api/fs.html#fs_fs_mkdir_path_options_callback">fs module</a> from Node to write to files and folders</li>
+<li><a href="https://www.npmjs.com/package/front-matter">front-matter</a> to read markdown files with a special syntax for metadata (title, date, category...)</li>
+<li><a href="https://github.com/markdown-it/markdown-it">markdown-it</a> to transform markdown to HTML</li>
+<li><a href="https://github.com/highlightjs/highlight.js/">highlight.js</a> to syntax highlight the code I add</li>
+</ul>
+<p>A typical post looks like:</p>
+<pre class="hljs"><code>---
+title: A title
+<span class="hljs-section">date: 05/04/2021
+---</span>
+
+<span class="hljs-section"># This is a title</span>
+
+This a paragraph
+
+<span class="hljs-code">```js
+const whatIsThis = &#x27;some code&#x27;;
+```</span>
+</code></pre>
+<p>Pages are built using the <a href="https://handlebarsjs.com/">handlebars template system</a>, which allows to create HTML dynamically.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> variables = { <span class="hljs-attr">posts</span>: [{ <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Post title&#x27;</span>, <span class="hljs-attr">formattedDate</span>: <span class="hljs-built_in">Date</span>.now() }] };
+<span class="hljs-keyword">const</span> html = handlebars.render(<span class="hljs-string">&#x27;postList.hbs&#x27;</span>, variables);
+</code></pre>
+<pre class="hljs"><code><span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;postList&quot;</span>&gt;</span>
+    </span><span class="hljs-template-tag">{{# <span class="hljs-name"><span class="hljs-builtin-name">each</span></span> posts}}</span><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>[</span><span class="hljs-template-variable">{{<span class="hljs-name">formattedDate</span>}}</span><span class="xml">] <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;</span></span></span><span class="hljs-template-variable">{{<span class="hljs-name">url</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">&quot;</span>&gt;</span></span><span class="hljs-template-variable">{{<span class="hljs-name">title</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    </span><span class="hljs-template-tag">{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+</span></code></pre>
+<p>A list of all posts is saved as <code>index.html</code> in the public root folder, and then all posts are saved one by one with the file structure: <code>post-slug/index.html</code>
+A <a href="https://github.com/JamesIves/github-pages-deploy-action">GitHub action</a> will run the build command every time I push to main and publish a new version of my blog to GitHub pages that is served using my custom domain.</p>
+<pre class="hljs"><code>index.html
+├── my-first-post/
+│   └── index.html
+├── my-second-post/
+│   └── index.html
+└── my-latest-blog-post/
+    └── index.html
+</code></pre>
+<h2>Adding a web server for development</h2>
+<p>This process works pretty well, but it scales poorly. Every time I'm writing a blog post, I would have to build the entire blog to check the changes. This could happen a hundred times as I'm writing a new article, highly inefficient!</p>
+<p>That's why I added a <a href="https://www.fastify.io/">fastify web server</a> in development to help me build things on the fly. I don't have to build the entire blog every time: changes are just a page refresh away now!</p>
+<p>Creating dynamic HTML pages with a web server is relatively easy: that's what web servers are for!
+I can use the same logic I had before to transform markdown to HTML and then pass it to my routes, <a href="https://github.com/fastify/point-of-view">point-of-view</a> can render html from handlebars templates, so I can reuse those too!</p>
+<pre class="hljs"><code>fastify.register(<span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;point-of-view&#x27;</span>), {});
+
+fastify.get(<span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">request, reply</span>) =&gt;</span> {
+  reply.view(<span class="hljs-string">&#x27;list.hbs&#x27;</span>, { <span class="hljs-attr">posts</span>: postsCache, ...viewGlobalOptions });
+});
+</code></pre>
+<p>Even reusing some logic, though, I wasn't satisfied with repeating the same process for development and production in two different ways; there must be a more efficient way.</p>
+<p>It turns out there is. For a project like this, I can leverage <a href="https://www.fastify.io/docs/latest/Testing/#benefits-of-using-fastifyinject">fastify.inject</a>, a utility function that helps you make fake HTTP calls to the server. It's intended to be used to test applications, but it works pretty well for our use case: I call every blog post to let fastify do all the heavy lifting, and then I save the HTML response to its appropriate file and location.</p>
+<p>The fastify web server is used to navigate the blog in development and to generate static HTML at build time!</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> urls = <span class="hljs-keyword">await</span> getAllUrls();
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> url <span class="hljs-keyword">of</span> urls) {
+  <span class="hljs-comment">// here&#x27;s where the magic happens.</span>
+  <span class="hljs-comment">// inject will get a response without any network calls</span>
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> app.inject({ <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-attr">url</span>: <span class="hljs-string">`/<span class="hljs-subst">${url}</span>`</span> });
+
+  <span class="hljs-keyword">await</span> createPost(<span class="hljs-string">`<span class="hljs-subst">${url}</span>/index.html`</span>, response.body);
+}
+</code></pre>
+<p>The fastify web server is used to navigate the blog in development and to generate static HTML at build time!</p>
+<h2>Nice to haves</h2>
+<p>Now that the process is working end to end, I can add some candies: fast refresh is first!</p>
+<p>Again, we use native tools and leverage how they work. I want to automatically refresh the page every time I make some changes on the backend, and I know already that every change will restart the server already: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">WebSockets</a> is perfect for this!</p>
+<p>When the server restarts, it will close the connection, and the client will try to reconnect; when it does, it will simply refresh the page to show the new changes.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">connect</span>(<span class="hljs-params">shouldReload = <span class="hljs-literal">false</span></span>) </span>{
+  <span class="hljs-keyword">const</span> ws = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">&#x27;ws://localhost:3000/ws&#x27;</span>);
+
+  <span class="hljs-comment">// on open is called as soon as a connection happens with the server</span>
+  ws.onopen = <span class="hljs-function">() =&gt;</span> shouldReload &amp;&amp; location.reload();
+
+  <span class="hljs-comment">// on close is called when the server disconnects (because it&#x27;s restarting)</span>
+  ws.onclose = <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> connect(<span class="hljs-literal">true</span>), <span class="hljs-number">1000</span>);
+}
+</code></pre>
+<p><video src="https://cdn.loom.com/sessions/thumbnails/269368b9988c4437828cdc40806ac17d-00001.mp4" playsinline mute loop autoplay>A video of hot reload in action: changing something on the server will trigger a page reload.</video></p>
+<h2>What we learned</h2>
+<p>Building a static site generator consists of transforming data from an arbitrary format to HTML and save this HTML to disk ready to be served to a web browser.</p>
+<p>For a better developer experience, we use a web server in development: watch mode reloads the server when files change on disk, removing the burden of manually perform an action to see changes reflected in the browser.<br>
+We can leverage this fact by listening to this event through a WebSockets connection and trigger a page reload with javascript.</p>
+<p>The development process can be automated through services like GitHub actions, executing commands every time the code base is updated.</p>
+<p>[You can read <a href="https://github.com/keepitterron/blg">the source code for this blog</a> on GitHub!]</p>
+</article></main></body></html>
