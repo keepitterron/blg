@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>C//S Blog &mdash; LLMs speak to my laziness</title><base href=/ ><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Claudio Semeraro"><meta name=description content="How a late night experiment with Codex turned into a production-ready 3D cabinet configurator, and what I learned about steering AI through code I don&#x27;t fully understand. Turns out the boring best practices we&#x27;ve preached for years (tests, docs, types, coherent style) are exactly what make LLMs effective collaborators."><meta name=keywords content="senior fronted developer,javascript,js,html,css,node,react,sass,less,BEM,es6"><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><script>window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-24133188-1', 'auto');
+    ga('send', 'pageview');</script><script async src=https://www.google-analytics.com/analytics.js></script><style>:root{--bg:#252b38;--color:#e4f0fb;--primary:#fcc5e9;--pink:#fae4fc}*,*::before,*::after{box-sizing:border-box}body,h1,h2,h3,h4,p,ul[class],ol[class],li,blockquote{padding:0;margin:0}body{min-height:100vh;scroll-behavior:smooth;text-rendering:optimizeSpeed;line-height:1.6}ul[class],ol[class]{list-style:none}article>*+*{margin-top:1em}html,body{font-size:100%}body{padding:1rem 2rem;background:var(--bg);color:var(--color);font-family:Geneva,Tahoma,Arial,sans-serif;padding:8%}h1{font-size:2.3rem;font-size:clamp(1.6rem,5vw,2.5rem);margin-bottom:6%}
+a{color:var(--primary);text-decoration:none;border-bottom:2px solid transparent}a:hover{border-bottom-color:var(--primary)}video,img{max-width:100%;aspect-ratio:16/9}body>header{display:flex;gap:1em;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:6%;max-width:75ch}header h3{font-size:2.3rem;font-size:clamp(2rem,5vw,2.5rem);line-height:1.2}header ul{display:grid;grid-auto-flow:column;gap:1em}main>article{max-width:75ch}main>h1{margin-bottom:3%}.content p code{color:var(--pink);padding:.1em .5em;border-radius:2px;background-color:rgba(0,0,0,0.5);display:inline-block}
+.post__content>*+h2{font-size:1.6rem;margin-top:2.2rem}.postList{font-size:clamp(1rem,3vw,1.6rem)}.postList a{display:inline-block}@media only screen and (max-width:600px){.postList time{display:block}}.content li+li{margin-top:.4rem}.content video,.content img,.hljs{border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.07),0 4px 8px rgba(0,0,0,0.07),0 8px 16px rgba(0,0,0,0.07),0 16px 32px rgba(0,0,0,0.07),0 32px 64px rgba(0,0,0,0.07)}.hljs{display:block;padding:1rem;margin:1rem 0 2rem;overflow-x:auto}
+.hljs+.hljs{margin-top:-1rem}.postList{list-style:none;margin:0;padding:0}.postList li{padding:0 0 1ch}.hljs{background:#2e3440}.hljs,.hljs-subst{color:#d8dee9}.hljs-selector-tag{color:#81a1c1}.hljs-selector-id{color:#8fbcbb;font-weight:bold}.hljs-selector-class{color:#8fbcbb}.hljs-selector-attr{color:#8fbcbb}.hljs-property{color:#88c0d0}.hljs-selector-pseudo{color:#88c0d0}.hljs-addition{background-color:rgba(163,190,140,0.5)}.hljs-deletion{background-color:rgba(191,97,106,0.5)}.hljs-built_in,.hljs-type{color:#8fbcbb}
+.hljs-class{color:#8fbcbb}.hljs-function{color:#88c0d0}.hljs-function>.hljs-title{color:#88c0d0}.hljs-keyword,.hljs-literal,.hljs-symbol{color:#81a1c1}.hljs-number{color:#a3be8c}.hljs-regexp{color:#ebcb8b}.hljs-string{color:#b9a8b6}.hljs-title{color:#8fbcbb}.hljs-params{color:#d8dee9}.hljs-bullet{color:#81a1c1}.hljs-code{color:#8fbcbb}.hljs-emphasis{font-style:italic}.hljs-formula{color:#8fbcbb}.hljs-strong{font-weight:bold}.hljs-link:hover{text-decoration:underline}.hljs-quote{color:#adb2c5}.hljs-comment{color:#adb2c5}
+.hljs-doctag{color:#8fbcbb}.hljs-meta,.hljs-meta-keyword{color:#5e81ac}.hljs-meta-string{color:#a3be8c}.hljs-attr{color:#8fbcbb}.hljs-attribute{color:#d8dee9}.hljs-builtin-name{color:#81a1c1}.hljs-name{color:#81a1c1}.hljs-section{color:#88c0d0}.hljs-tag{color:#81a1c1}.hljs-variable{color:#d8dee9}.hljs-template-variable{color:#d8dee9}.hljs-template-tag{color:#81a1c1}blockquote{border-left:4px solid var(--primary);padding-left:1em;margin:1em 0;font-style:italic}.content strong{font-weight:700}</style></head><body><header><h3><a href=/ title="Blog home">CS (in JS)</a></h3><ul class=nav><li><a href=https://github.com/keepitterron title="keepitterron on GitHub">GitHub.</a></li><li><a href=https://twitter.com/keepitterron title="keepitterron on Twitter">Twitter.</a></li><li><a href=http://blg.keepitterron.nl title="keepitterron blog">Blog.</a></li></ul></header> <main class="content post"><time>[Oct 03, 2026]</time><h1 class=post__title>✨ LLMs speak to my laziness</h1><article class=post__content><h2>Rage against the machine</h2>
+<p>A couple of months ago I switched from being severely skeptical towards AI as a coding tool, to embracing our new artificial overlords.
+While I care about and enjoy coding as a craft, I've come around to appreciate orchestrating LLMs to speed up my workflow.
+Frontier models have become so good at coding that ignoring them would be counterproductive.</p>
+<h2>Experiments that would never be</h2>
+<p>As I was stealth killing Athenian soldiers as Kassandra in Assassin's Creed Odyssey, I thought it would be cool to start effectively looking into 3D for our cabinet configurator product.</p>
+<p>I like the 2D rendering for quickly building cabinetry, but the power of rotating a model from all angles is undefeated.</p>
+<p>So I pulled out my laptop and used GPT 5.3-Codex on my free account to ask OpenAI to subsidize my experiment:</p>
+<blockquote>
+<p>can you use the cabinet configuration to render a 3D model? Use the 2D rendering as a base.</p>
+</blockquote>
+<p>Now, Codex has surprised me one-shotting complex problems before, but this was still something for my own exclusive enjoyment: a starting point for me to explore Three.js and 3D rendering.</p>
+<p>That is not what happened, let me tell you.
+The produced output was too good to be ignored and I quickly shared it internally as a tease: it worked a bit too well and people wanted more. I wanted more. The genie could not be put back into the bottle.</p>
+<img src="assets/3dnator.gif" alt="First version of the 3D cabinet configurator" />
+<h2>Experiments that are just right</h2>
+<p>A few things have aligned quite well here: the configurator is well structured, well tested and well documented.
+While I did put a lot of effort and care into it, LLMs have done their part by making it trivial to keep tests and documentation up to date and coherent. It is a geometry heavy project and I do not possess any related knowledge, at least I didn't before Claude helped me get the right algos, the right verbiage and the right papers to learn from.</p>
+<p>With all this context and wealth of documentation, Codex was able to easily navigate the problem space and project it into another solved problem: cabinets built with Three.js. It's just boxes on top of boxes next to other boxes.</p>
+<h2>Human in the loop</h2>
+<p>First order of the day was understanding the generated code. I have very limited experience with Three.js and there was just too much code for me to go through; from experience Codex does not output the type of code I like to write either.</p>
+<p>This was going to be difficult: <strong>I wanted a bike and now it was time to start pedaling.</strong></p>
+<p>I asked the model to do what they do best: explain the code back to me like I'm 5 (at least mentally). Comment every function like I know nothing of geometry (I actually don't) nor Three.js (it's true). Don't be afraid to dumb it down and heavily reference documentation and Wikipedia.</p>
+<p>While the Wikipedia page for the Euler rotation was pretty useless to me, the Three.js documentation coupled with the code was enough for me to get a better and better picture of what was going on.</p>
+<p>Armed with this knowledge and so many comments I asked Claude to do an adversarial review of the code written: it was happy to comply and I had fun pitting two models against each other.</p>
+<h2>Do I actually get it?</h2>
+<p>Time for polish came by very quickly and I soon found the limits of my own understanding: why are the colors off? How do I push this box further back? Why are the handles off?
+I really tried but this was still out of my reach.</p>
+<p>So I spent an hour going back and forth in a conversation with AI: I could not prompt correctly because I did not really know what I was asking. It was frustrating.
+The loop was familiar though: you start with broad questions and you learn as you prompt until you know enough to refine your line of questioning.</p>
+<p>One technique I've relied upon heavily is to ask the model to explain to me what I was asking and how I should have asked it instead. Enhancing my <a href="https://blog.bryanl.dev/posts/ai-senior-engineer-pipeline/">productive struggle</a>.</p>
+<p>Subsequent prompts were much better and the feedback loop was getting tighter and more fulfilling.</p>
+<h2>Production ready</h2>
+<p>Now I finally had a product I was happy with and I really wanted to put in front of our users, but the code was verbose and hard to follow. If I cannot review it, how can I ask my team to do it?</p>
+<p>So I did what I'm doing very often lately: ask Claude to refactor it according to my own style and taste; turns out LLMs are good at following instructions in a way I'm not. I especially trust Opus.</p>
+<p>The refactoring process is aided by LLMs in two ways: doing the actual writing of the code and conversing back and forth on how to architect it well. I do most of the thinking and I am the one steering the machine, I need to own the process and end result.</p>
+<img src="assets/cabinator-3d.gif" alt="Ready for production!" />
+<h2>Future proof</h2>
+<p>With the product working and polished and the code pleasing my senses, this is ready for the next phase: hitting production and being open for modification.</p>
+<p>Coherent coding style and architecture, full test suite and plenty of up to date documentation make it trivial to ask Claude to one-shot new features provided the scope is small enough.</p>
+<p>I can (and I did) take out my phone as I'm walking my dog and dump some context into the artificial machine, then open up the PR and test it locally once I'm home. Most of the times I don't have to do anything, all the primitives are already there:</p>
+<ul>
+<li>tickets are well formed and provide the full context</li>
+<li>code is coherent and provides enough examples of how things should be done</li>
+<li>documentation and comments in code to help navigate and explain</li>
+<li>tests are up to date and plentiful to avoid mistakes and regressions</li>
+<li>codebase has types and linting and automations</li>
+</ul>
+<p>These have been best practices for years. None of this is new. But now, it speaks to my laziness.</p>
+</article></main></body></html>
