@@ -1,7 +1,7 @@
 ---
 title: LLMs speak to my laziness
 description: How a late night experiment with Codex turned into a production-ready 3D cabinet configurator, and what I learned about steering AI through code I don't fully understand. Turns out the boring best practices we've preached for years (tests, docs, types, coherent style) are exactly what make LLMs effective collaborators.
-date: 10/03/2026
+date: 03/10/2026
 ---
 
 ## Rage against the machine
